@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="CameraFlipBug.PortraitContentView">
+  <ContentView.Content>
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--TOP SCREEN BUTTONS-->
+            <!--CLOSE CAMERA-->
+            <StackLayout Grid.Row="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="50" BackgroundColor="Black">
+                <StackLayout HorizontalOptions="Start" VerticalOptions="Center">
+                    <!--Close button-->
+                </StackLayout>
+            </StackLayout>
+
+            <!--CAMERA VIEW-->
+            <xct:CameraView x:Name="cameraView" Grid.Row="1"
+                            CaptureMode="Photo" 
+                            OnAvailable="CameraView_OnAvailable"
+                            MediaCaptured="CameraView_MediaCaptured"
+                            HorizontalOptions="FillAndExpand"
+                            FlashMode="Off"
+                            VerticalOptions="FillAndExpand">
+                <xct:CameraView.GestureRecognizers>
+                    <PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated"/>
+                </xct:CameraView.GestureRecognizers>
+            </xct:CameraView>
+
+            <!--BOTTOM SCREEN BUTTONS-->
+            <StackLayout Grid.Row="2"
+                         Orientation="Horizontal" 
+                         HorizontalOptions="FillAndExpand" 
+                         HeightRequest="100" 
+                         BackgroundColor="Black">
+                <Grid x:Name="bottomButtonsGrid" 
+                      HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--FLASH-->
+                    <StackLayout x:Name="flashStackLayout" Grid.Column="0" 
+                                 HorizontalOptions="Center"                                         
+                                 HeightRequest="30"
+                                 WidthRequest="30"
+                                 VerticalOptions="Center">
+                        <Label x:Name="flashButton" 
+                                              Text="FLASH"
+                                              HorizontalOptions="Center"
+                                              VerticalOptions="Center"
+                                TextColor="White"
+                                              IsEnabled="False">
+                        </Label>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="EnableDisableFlash_Tapped"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+
+                    <!--CAPTURE BUTTON-->
+                    <StackLayout Grid.Column="1"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 HeightRequest="70"
+                                 WidthRequest="70">
+                        <Label x:Name="captureButton" 
+                                          Text="CAPTURE"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"
+                                          HeightRequest="70"
+                                          WidthRequest="70"
+                                          TextColor="White"          
+                                          IsEnabled="False"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShutterCommand, Source={x:Reference cameraView}}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+
+                    <!--SAVE BUTTON-->
+                    <StackLayout x:Name="saveButton" Grid.Column="2" Spacing="15"
+                                 VerticalOptions="Center" 
+                                 Orientation="Horizontal">
+                        <Label Text="SAVE" 
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" 
+                               VerticalTextAlignment="Center" 
+                               TextColor="LightBlue"
+                               FontSize="Medium">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding NavigateToTaggingPage}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+
+            <BoxView x:Name="shutterFeedbackPage" Opacity="0.1" Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Black" IsVisible="False"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
